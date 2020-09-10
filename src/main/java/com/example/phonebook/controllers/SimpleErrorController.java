@@ -12,7 +12,8 @@ public class SimpleErrorController implements ErrorController{
 
     @RequestMapping(value = "/error")
     public String openError(Model model) {
-        model.addAttribute("error", "Something went wrong");
+        model.addAttribute("message", "Something went wrong!");
+        model.addAttribute("error", "Unknown error");
         return "error";
     }
 
