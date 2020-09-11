@@ -1,5 +1,7 @@
 package com.example.phonebook.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,6 +15,7 @@ public class PhoneNumber {
     @Column(unique = true, nullable = false)
     private long number;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "phone_user")
     private User phoneUser;
