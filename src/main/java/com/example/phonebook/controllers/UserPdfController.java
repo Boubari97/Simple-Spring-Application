@@ -45,8 +45,10 @@ public class UserPdfController {
             response.setHeader("Content-disposition", "inline; filename=users.pdf");
             response.setContentLength(bytes.length);
 
-            response.getOutputStream().write(bytes);
-            response.getOutputStream().flush();
+            try (OutputStream outputStream = response.getOutputStream()) {
+                outputStream.write(bytes);
+                outputStream.flush();
+            }
             return "";
         } catch (Exception e) {
             request.setAttribute("errorMessage", e.getMessage());

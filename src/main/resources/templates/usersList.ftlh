@@ -4,8 +4,7 @@
     <title>Users</title>
     <meta charset="UTF-8">
 </head>
-    <h5><a href="/">Back to start page</a></h5>
-
+    <h5><a href="/">Back to start page</a></h5><br>
     <table border=1>
         <tr><td>User Uid</td><td>Username</td></tr>
         <#list users as user>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
 </head>
 <body>
+<h5><a href="/users">Back to list</a></h5>
 <fieldset>
     <legend>User</legend>
     <form name="user">
