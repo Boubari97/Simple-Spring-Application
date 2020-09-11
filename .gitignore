@@ -1,10 +1,12 @@
 HELP.md
 target/
-### ??? start ###
+### start ###
 mvnw.*
 mvnw
 .mvn/
-### ??? end ###
+*.pdf
+*.json
+### end ###
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
