@@ -1,6 +1,7 @@
 package com.example.phonebook.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,6 +20,12 @@ public class User {
 
     public User() {
 
+    }
+
+    public User(String username, PhoneNumber phoneNumbers) {
+        this.username = username;
+        this.phoneNumbers = new ArrayList<>();
+        this.phoneNumbers.add(phoneNumbers);
     }
 
     public User(String username, List<PhoneNumber> phoneNumbers) {
@@ -42,5 +49,14 @@ public class User {
 
     public List<PhoneNumber> getPhoneNumbers() {
         return phoneNumbers;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uid=" + uid +
+                ", username='" + username + '\'' +
+                ", phoneNumbers=" + phoneNumbers +
+                '}';
     }
 }

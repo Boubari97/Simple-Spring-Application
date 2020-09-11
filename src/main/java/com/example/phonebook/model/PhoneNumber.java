@@ -52,4 +52,12 @@ public class PhoneNumber {
     public PhoneCompany getPhoneCompany() {
         return phoneCompany;
     }
+
+    @Override
+    public String toString() {
+        return "PhoneNumber{" +
+                "number=" + number +
+                ", phoneCompany=" + phoneCompany.getName() +
+                '}';
+    }
 }

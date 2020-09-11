@@ -42,4 +42,12 @@ public class PhoneCompany {
     public List<PhoneNumber> getNumbers() {
         return numbers;
     }
+
+    @Override
+    public String toString() {
+        return "PhoneCompany{" +
+                "uid=" + uid +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
