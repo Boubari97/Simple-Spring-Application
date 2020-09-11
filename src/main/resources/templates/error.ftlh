@@ -5,7 +5,7 @@
     <title>Error page</title>
 </head>
 <body>
-    <h1>${message ! "Something went wrong!!!"}</h1>
-    <#if error ??><h5>${error}</h5></#if>
+    <h1>${errorMessage ! "Something went wrong!!!"}</h1>
+    <#if errorDetails ??><h5>${errorDetails}</h5></#if>
 </body>
 </html>
