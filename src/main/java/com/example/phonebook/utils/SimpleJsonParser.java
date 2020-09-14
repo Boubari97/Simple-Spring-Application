@@ -1,4 +1,4 @@
-package com.example.phonebook.services;
+package com.example.phonebook.utils;
 
 import com.example.phonebook.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;

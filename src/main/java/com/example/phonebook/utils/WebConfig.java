@@ -1,7 +1,5 @@
 package com.example.phonebook.utils;
 
-import com.example.phonebook.services.SimpleJsonParser;
-import com.example.phonebook.services.PdfBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;

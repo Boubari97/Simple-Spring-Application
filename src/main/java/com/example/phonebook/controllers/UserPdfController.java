@@ -2,7 +2,7 @@ package com.example.phonebook.controllers;
 
 import com.example.phonebook.model.User;
 import com.example.phonebook.repositories.UserRepository;
-import com.example.phonebook.services.PdfBuilder;
+import com.example.phonebook.utils.PdfBuilder;
 import org.aspectj.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
