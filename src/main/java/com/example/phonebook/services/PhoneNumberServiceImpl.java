@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class PhoneNumberServiceImpl implements PhoneNumberService {
@@ -25,6 +26,11 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
     @Override
     public void deleteNumberByUid(long uid) {
         phoneNumberRepository.deleteById(uid);
+    }
+
+    @Override
+    public Set<PhoneNumber> findAllByUserUid(long uid) {
+        return phoneNumberRepository.findAllByPhoneUserUid(uid);
     }
 
     @Override

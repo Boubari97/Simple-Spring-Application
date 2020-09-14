@@ -1,7 +1,7 @@
 package com.example.phonebook.controllers;
 
 import com.example.phonebook.model.User;
-import com.example.phonebook.repositories.UserRepository;
+import com.example.phonebook.services.UserService;
 import com.example.phonebook.utils.PdfBuilder;
 import org.aspectj.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,31 +24,32 @@ public class UserController {
 
     private static final String FILE_NAME = "users.pdf";
     private final PdfBuilder pdfBuilder;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public UserController(PdfBuilder pdfBuilder, UserRepository userRepository) {
+    public UserController(PdfBuilder pdfBuilder, UserService userService) {
         this.pdfBuilder = pdfBuilder;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
 
     @GetMapping(value = "/users")
     public String getUserList(Model model) {
-        List<User> userList = userRepository.findAll();
+        List<User> userList = userService.findAllUsers();
         model.addAttribute("users", userList);
         return "usersList.ftlh";
     }
 
     @GetMapping(value = "/users/{uid}")
     public String getUserByUid(@PathVariable("uid") long uid, Model model, HttpServletRequest request) {
-        Optional<User> optionalUser = userRepository.findByUid(uid);
+        Optional<User> optionalUser = userService.findUserByUid(uid);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             model.addAttribute("uid", user.getUid());
             model.addAttribute("username", user.getUsername());
             model.addAttribute("numbers", user.getPhoneNumbers());
-            return "user.ftlh";
+            model.addAttribute("roles", user.getRoles());
+            return "userProfilePage.ftlh";
         } else {
             request.setAttribute("errorMessage", "User Not Found");
             request.setAttribute("errorDetails", "Sorry, but user with UID: " + uid + " not found.");
@@ -63,7 +64,7 @@ public class UserController {
             pdfBuilder.createPdfFile(FILE_NAME);
             pdfBuilder.addTextToPDF("USERS: ");
 
-            List<User> userList = userRepository.findAll();
+            List<User> userList = userService.findAllUsers();
             for (User user : userList) {
                 pdfBuilder.addTextToPDF(user.toString());
             }
@@ -90,7 +91,7 @@ public class UserController {
     @GetMapping(value = "/users/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<User> getJsonUsers() {
-        return userRepository.findAll();
+        return userService.findAllUsers();
     }
 
 }

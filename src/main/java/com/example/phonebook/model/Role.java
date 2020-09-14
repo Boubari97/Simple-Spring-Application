@@ -1,13 +1,14 @@
 package com.example.phonebook.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "phone_companies")
-public class PhoneCompany {
+@Table(name = "roles")
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,21 +19,22 @@ public class PhoneCompany {
 
     @Transient
     @JsonIgnore
-    @OneToMany(mappedBy = "phoneCompany", fetch = FetchType.LAZY)
-    private List<PhoneNumber> numbers;
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
 
-    public PhoneCompany() {
+    public Role(){}
+
+    public Role(long uid) {
+        this.uid = uid;
     }
 
-    public PhoneCompany(String name, List<PhoneNumber> numbers) {
+    public Role(String name) {
         this.name = name;
-        this.numbers = numbers;
     }
 
-    public PhoneCompany(long uid, String name, List<PhoneNumber> numbers) {
+    public Role(long uid, String name) {
         this.uid = uid;
         this.name = name;
-        this.numbers = numbers;
     }
 
     public long getUid() {
@@ -43,15 +45,16 @@ public class PhoneCompany {
         return name;
     }
 
-    public List<PhoneNumber> getNumbers() {
-        return numbers;
+    @Override
+    public String getAuthority() {
+        return name;
     }
 
     @Override
     public String toString() {
-        return "PhoneCompany{" +
+        return "Role{" +
                 "uid=" + uid +
-                ", name='" + name + '\'' +
+                ", authority='" + name + '\'' +
                 '}';
     }
 }

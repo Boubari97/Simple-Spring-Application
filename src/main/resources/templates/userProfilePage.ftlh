@@ -1,3 +1,4 @@
+<#import "/spring.ftl" as spring/>
 <html>
 <head>
     <title>User</title>
@@ -10,9 +11,14 @@
     <form name="user">
         Uid : <a>${uid}</a><br/>
         Username : <a>${username}</a><br/>
-        <#list numbers as number>
-            Numbers: <a>${number.number}</a><br/>
-        </#list>
+        Numbers:
+        <#if numbers ??><#list numbers as number>
+            <a>${number.number}</a><br/>
+        </#list></#if>
+        ROLES:
+        <#if roles ??><#list roles as role>
+            <a>${role.name}</a><br/>
+        </#list></#if>
     </form>
 </fieldset>
 </body>
