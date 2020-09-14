@@ -7,10 +7,12 @@
 <body>
     <fieldset>
         <legend>Upload file</legend>
-            <form enctype="multipart/form-data" method="post">
+            <form enctype="multipart/form-data" method="post" action="/upload">
+                <br><font color="red">Max file size = 256 MB</font>
                 <br><input type="file" name="file" accept="application/json">
                 <br><input type="submit" value="Upload">
             </form>
     </fieldset>
+    <#if successMessage ??><font color="${color}" size="14">${successMessage}</font></#if>
 </body>
 </html>
