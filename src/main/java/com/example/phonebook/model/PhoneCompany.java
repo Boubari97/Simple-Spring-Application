@@ -18,7 +18,7 @@ public class PhoneCompany {
 
     @Transient
     @JsonIgnore
-    @OneToMany(mappedBy = "phoneCompany", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "phoneCompany", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PhoneNumber> numbers;
 
     public PhoneCompany() {

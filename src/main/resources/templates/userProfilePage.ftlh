@@ -5,17 +5,18 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<h5><a href="/users">Back to list</a></h5>
+<h5><a href="#" onclick="history.go(-1)">Go Back</a></h5>
 <fieldset>
     <legend>User</legend>
     <form name="user">
         Uid : <a>${uid}</a><br/>
         Username : <a>${username}</a><br/>
-        Numbers:
+        Numbers :
         <#if numbers ??><#list numbers as number>
-            <a>${number.number}</a><br/>
+            <a href="/number/${number.uid}">${number.number}</a><br/>
         </#list></#if>
-        ROLES:
+        <#if username == principal.name><a href="/number">Add number</a></#if><br/>
+        Roles :
         <#if roles ??><#list roles as role>
             <a>${role.name}</a><br/>
         </#list></#if>

@@ -24,7 +24,7 @@ public class User implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "phoneUser", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "phoneUser", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<PhoneNumber> phoneNumbers;
 
     public User() {

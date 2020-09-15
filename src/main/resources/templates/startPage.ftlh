@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1 align="center">Welcome to start page, ${username ! "Guest"}!</h1>
-    <p><#if username ??><a href="/logout">Log Out</a>
+    <p><#if username ??><a href="/logout">Log Out</a><p><a href="/profile">My Profile</a></p>
         <#else><a href="/login">Log In</a> OR <a href="/registration">Registration</a>
     </#if>
     <p>Show all users in PDF file: <a href="/users/pdf">Go</a>

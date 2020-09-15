@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -56,5 +57,19 @@ public class Role implements GrantedAuthority {
                 "uid=" + uid +
                 ", authority='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return uid == role.uid &&
+                name.equals(role.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uid, name);
     }
 }

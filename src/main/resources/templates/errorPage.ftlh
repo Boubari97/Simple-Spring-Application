@@ -8,5 +8,7 @@
 <body>
     <h1>${errorMessage ! "Something went wrong!!!"}</h1>
     <#if errorDetails ??><h5>${errorDetails}</h5></#if>
+    <#if exceptionCause ??><h5>${exceptionCause}</h5></#if>
+    <#if statusCode ??><h5>Code: ${statusCode}</h5></#if>
 </body>
 </html>

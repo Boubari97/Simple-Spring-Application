@@ -16,11 +16,11 @@ public class PhoneNumber {
     private long number;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "phone_user")
     private User phoneUser;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "phone_company_uid", nullable = false)
     private PhoneCompany phoneCompany;
 
