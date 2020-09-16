@@ -4,6 +4,7 @@ import com.example.phonebook.model.PhoneNumber;
 import com.example.phonebook.repositories.PhoneNumberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
@@ -18,6 +19,7 @@ public class PhoneNumberServiceImpl implements PhoneNumberService {
         this.phoneNumberRepository = phoneNumberRepository;
     }
 
+    @Transactional
     @Override
     public void saveNumber(PhoneNumber number) {
         phoneNumberRepository.save(number);

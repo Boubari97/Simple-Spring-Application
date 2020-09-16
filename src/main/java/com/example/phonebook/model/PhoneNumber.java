@@ -68,6 +68,10 @@ public class PhoneNumber {
         return phoneUser;
     }
 
+    public UserAccount getUserAccount() {
+        return userAccount;
+    }
+
     public PhoneCompany getPhoneCompany() {
         return phoneCompany;
     }

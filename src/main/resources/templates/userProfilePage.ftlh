@@ -6,6 +6,7 @@
 </head>
 <body>
 <h5><a href="#" onclick="history.go(-1)">Go Back</a></h5>
+<h5><a href="/">Go to start page</a></h5>
 <fieldset>
     <legend>User</legend>
     <form name="user">

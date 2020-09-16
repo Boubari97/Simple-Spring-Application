@@ -47,8 +47,8 @@ public class UserAccount {
         this.phoneCompany = phoneCompany;
     }
 
-    public void changeMobileOperator(PhoneCompany phoneCompany) {
-        this.phoneCompany = phoneCompany;
+    public void provideService(BigDecimal priceForService) {
+        balance = balance.subtract(priceForService);
     }
 
     public long getUid() {

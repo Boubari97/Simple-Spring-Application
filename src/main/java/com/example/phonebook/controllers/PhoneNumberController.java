@@ -48,17 +48,26 @@ public class PhoneNumberController {
     }
 
     @PostMapping(value = "/number")
-    public String saveOrUpdateNumber(@RequestParam("number") long number,
-                                   @RequestParam("companyUid") long companyUid,
-                                   Principal principal) {
+    public String saveOrUpdateNumber(@RequestParam(value = "uid") Long uid,
+                                     @RequestParam(value = "number", required = false) Long number,
+                                     @RequestParam("companyUid") Long companyUid,
+                                     Principal principal) {
         User user = (User) userService.loadUserByUsername(principal.getName());
         Optional<PhoneCompany> phoneCompany = phoneCompanyService.findCompanyByUid(companyUid);
-
-        BigDecimal startBalance = new BigDecimal(50 + Math.random()*100 );
-        UserAccount userAccount = new UserAccount(startBalance, phoneCompany.get());
-
-        PhoneNumber phoneNumber = new PhoneNumber(number, user, phoneCompany.get(), userAccount);
-        phoneNumberService.saveNumber(phoneNumber);
+        if (phoneCompany.isPresent()) {
+            if (uid != null) {
+                Optional<PhoneNumber> optionalPhoneNumber = phoneNumberService.findNumberByUid(uid);
+                if (optionalPhoneNumber.isPresent()) {
+                    PhoneNumber phoneNumber = optionalPhoneNumber.get();
+                    userAccountService.changeMobileOperator(phoneNumber, phoneCompany.get());
+                }
+            } else if (number != null) {
+                BigDecimal startBalance = BigDecimal.valueOf(50 + Math.random() * 100);
+                UserAccount userAccount = new UserAccount(startBalance, phoneCompany.get());
+                PhoneNumber phoneNumber = new PhoneNumber(number, user, phoneCompany.get(), userAccount);
+                phoneNumberService.saveNumber(phoneNumber);
+            }
+        }
         return "redirect:/profile";
     }
 }
