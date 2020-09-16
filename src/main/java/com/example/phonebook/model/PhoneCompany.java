@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "phone_companies")
@@ -21,18 +22,25 @@ public class PhoneCompany {
     @OneToMany(mappedBy = "phoneCompany", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PhoneNumber> numbers;
 
+    @Transient
+    @JsonIgnore
+    @OneToMany(mappedBy = "phoneCompany", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<UserAccount> accounts;
+
     public PhoneCompany() {
     }
 
-    public PhoneCompany(String name, List<PhoneNumber> numbers) {
+    public PhoneCompany(String name, List<PhoneNumber> numbers, Set<UserAccount> accounts) {
         this.name = name;
         this.numbers = numbers;
+        this.accounts = accounts;
     }
 
-    public PhoneCompany(long uid, String name, List<PhoneNumber> numbers) {
+    public PhoneCompany(long uid, String name, List<PhoneNumber> numbers, Set<UserAccount> accounts) {
         this.uid = uid;
         this.name = name;
         this.numbers = numbers;
+        this.accounts = accounts;
     }
 
     public long getUid() {

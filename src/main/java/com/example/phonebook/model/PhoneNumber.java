@@ -24,7 +24,18 @@ public class PhoneNumber {
     @JoinColumn(name = "phone_company_uid", nullable = false)
     private PhoneCompany phoneCompany;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_account_uid", nullable = true)
+    private UserAccount userAccount;
+
     public PhoneNumber() {
+    }
+
+    public PhoneNumber(long number, User phoneUser, PhoneCompany phoneCompany, UserAccount userAccount) {
+        this.number = number;
+        this.phoneUser = phoneUser;
+        this.phoneCompany = phoneCompany;
+        this.userAccount = userAccount;
     }
 
     public PhoneNumber(long number, User phoneUser, PhoneCompany phoneCompany) {
@@ -33,10 +44,15 @@ public class PhoneNumber {
         this.phoneCompany = phoneCompany;
     }
 
-    public PhoneNumber(long uid, long number, User phoneUser, PhoneCompany phoneCompany) {
+    public PhoneNumber(long uid, long number, User phoneUser, PhoneCompany phoneCompany, UserAccount userAccount) {
         this.uid = uid;
         this.number = number;
         this.phoneUser = phoneUser;
+        this.phoneCompany = phoneCompany;
+        this.userAccount = userAccount;
+    }
+
+    public void setPhoneCompany(PhoneCompany phoneCompany) {
         this.phoneCompany = phoneCompany;
     }
 
