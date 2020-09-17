@@ -11,11 +11,7 @@ import java.util.List;
 public class SimpleJsonParser {
 
     private static final String JSON_PATH =
-            "D:\\SelfStudyProjectsIDEA\\phonebook\\src\\main\\resources\\json\\";
-
-    public SimpleJsonParser() {
-
-    }
+            "classpath:\\src\\main\\resources\\json\\";
 
     public List<User> parseUserFromFile(File file) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();

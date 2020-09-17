@@ -13,6 +13,6 @@
                 <br><input type="submit" value="Upload">
             </form>
     </fieldset>
-    <#if successMessage ??><font color="${color}" size="14">${successMessage}</font></#if>
+    <#if successMessage ??><font color="green" size="14">${successMessage}</font></#if>
 </body>
 </html>

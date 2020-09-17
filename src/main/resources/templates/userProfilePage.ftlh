@@ -19,7 +19,7 @@
         <#if username == principal.name><a href="/number">Add number</a></#if><br/>
         Roles :
         <#if roles ??><#list roles as role>
-            <a>${role.name}</a><br/>
+            <a>${role.authority}</a><br/>
         </#list></#if>
     </form>
 </fieldset>

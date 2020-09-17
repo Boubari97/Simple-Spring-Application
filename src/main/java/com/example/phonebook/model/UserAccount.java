@@ -59,18 +59,6 @@ public class UserAccount {
         return balance;
     }
 
-    public PhoneNumber getNumber() {
-        return number;
-    }
-
-    public PhoneCompany getPhoneCompany() {
-        return phoneCompany;
-    }
-
-    public void setNumber(PhoneNumber number) {
-        this.number = number;
-    }
-
     public void setPhoneCompany(PhoneCompany phoneCompany) {
         this.phoneCompany = phoneCompany;
     }

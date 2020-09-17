@@ -7,8 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class PdfBuilder {
 
@@ -16,37 +14,24 @@ public class PdfBuilder {
     private final Font defaultFont;
     private static final String DEFAULT_PATH = "src\\main\\resources\\pdf\\";
 
-    public PdfBuilder(){
+    public PdfBuilder() {
         defaultFont = FontFactory.getFont(FontFactory.COURIER, 16, BaseColor.BLACK);
     }
 
-    public Document getPdfAsDocument() {
-        closeForEdit();
-        return document;
-    }
-
     public File getPdfAsFile(String fileName) throws FileNotFoundException {
-        closeForEdit();
+        closeFileForEdit();
         File file = new File(DEFAULT_PATH + fileName);
         if (!file.exists()) {
-            throw new FileNotFoundException("So such file with name: " + fileName
+            throw new FileNotFoundException("No such file with name: " + fileName
                     + ", in path: " + DEFAULT_PATH);
         }
         return file;
     }
 
-    public void createPdfFile(String fileName) throws FileNotFoundException, DocumentException {
+    public void createPdfFile(String fileName) throws IOException, DocumentException {
         document = new Document();
-        File file = new File(DEFAULT_PATH + fileName);
-        if (file.exists()) {
-            try {
-                Files.delete(Paths.get(DEFAULT_PATH + fileName));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
         PdfWriter.getInstance(document, new FileOutputStream(DEFAULT_PATH + fileName));
-        openForEdit();
+        openFileForEdit();
     }
 
     public void addTextToPDF(String text) throws DocumentException {
@@ -54,11 +39,15 @@ public class PdfBuilder {
         document.add(paragraph);
     }
 
-    public void openForEdit() {
-        document.open();
+    public void openFileForEdit() {
+        if (document != null) {
+            document.open();
+        }
     }
 
-    public void closeForEdit() {
-        document.close();
+    public void closeFileForEdit() {
+        if (document != null && document.isOpen()) {
+            document.close();
+        }
     }
 }

@@ -29,6 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
         return new SimpleJsonParser();
     }
 
+    @Bean
     public DefaultTransactionDefinition defaultTransactionDefinition() {
         DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
         definition.setIsolationLevel(TransactionDefinition.ISOLATION_REPEATABLE_READ);
