@@ -17,8 +17,8 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
             HttpServletResponse response,
             AccessDeniedException exc) throws IOException, ServletException {
 
-        request.setAttribute("errorMessage", exc.getLocalizedMessage());
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/error");
+        request.setAttribute("exception", exc);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/access_error");
         dispatcher.forward(request, response);
     }
 }

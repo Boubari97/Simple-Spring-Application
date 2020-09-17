@@ -25,7 +25,7 @@ public class User implements UserDetails {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "phoneUser", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<PhoneNumber> phoneNumbers;
+    private Set<PhoneNumber> phoneNumbers;
 
     public User() {
 
@@ -39,17 +39,17 @@ public class User implements UserDetails {
     public User(String username, String password, PhoneNumber phoneNumbers) {
         this.username = username;
         this.password = password;
-        this.phoneNumbers = new ArrayList<>();
+        this.phoneNumbers = new HashSet<>();
         this.phoneNumbers.add(phoneNumbers);
     }
 
-    public User(String username, String password, List<PhoneNumber> phoneNumbers) {
+    public User(String username, String password, Set<PhoneNumber> phoneNumbers) {
         this.username = username;
         this.password = password;
         this.phoneNumbers = phoneNumbers;
     }
 
-    public User(long uid, String username, String password, List<PhoneNumber> phoneNumbers, Set<Role> roles) {
+    public User(long uid, String username, String password, Set<PhoneNumber> phoneNumbers, Set<Role> roles) {
         this.uid = uid;
         this.roles = roles;
         this.username = username;
@@ -95,15 +95,11 @@ public class User implements UserDetails {
         return true;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
     public void addRole(Role role) {
         roles.add(role);
     }
 
-    public List<PhoneNumber> getPhoneNumbers() {
+    public Set<PhoneNumber> getPhoneNumbers() {
         return phoneNumbers;
     }
 

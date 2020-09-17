@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findUserByUid(long uid) {
-        return userRepository.findByUid(uid);
+        return userRepository.findById(uid);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 }

@@ -36,37 +36,38 @@ public class PhoneNumberController {
 
     @GetMapping(value = {"/number", "/number/{uid}"})
     public String showNumberPage(@PathVariable(value = "uid", required = false) Long uid, Model model, Principal principal) {
+        String formAction = "/number/";
         if (uid != null) {
-            Optional<PhoneNumber> optionalPhoneNumber = phoneNumberService.findNumberByUid(uid);
-            if (optionalPhoneNumber.isPresent()) {
-                PhoneNumber number = optionalPhoneNumber.get();
-                model.addAttribute("number", number);
-            }
+            Optional<PhoneNumber> phoneNumber = phoneNumberService.findNumberByUid(uid);
+            phoneNumber.ifPresent(number -> model.addAttribute("number", number));
+            formAction += uid;
         }
+        model.addAttribute("formAction", formAction);
         model.addAttribute("username", principal.getName());
         return "numberPage.ftlh";
     }
 
     @PostMapping(value = "/number")
-    public String saveOrUpdateNumber(@RequestParam(value = "uid") Long uid,
-                                     @RequestParam(value = "number", required = false) Long number,
-                                     @RequestParam("companyUid") Long companyUid,
-                                     Principal principal) {
-        User user = (User) userService.loadUserByUsername(principal.getName());
+    public String saveNumber(@RequestParam(value = "number", required = false) Long number,
+                             @RequestParam("companyUid") Long companyUid, Principal principal) {
         Optional<PhoneCompany> phoneCompany = phoneCompanyService.findCompanyByUid(companyUid);
         if (phoneCompany.isPresent()) {
-            if (uid != null) {
-                Optional<PhoneNumber> optionalPhoneNumber = phoneNumberService.findNumberByUid(uid);
-                if (optionalPhoneNumber.isPresent()) {
-                    PhoneNumber phoneNumber = optionalPhoneNumber.get();
-                    userAccountService.changeMobileOperator(phoneNumber, phoneCompany.get());
-                }
-            } else if (number != null) {
-                BigDecimal startBalance = BigDecimal.valueOf(50 + Math.random() * 100);
-                UserAccount userAccount = new UserAccount(startBalance, phoneCompany.get());
-                PhoneNumber phoneNumber = new PhoneNumber(number, user, phoneCompany.get(), userAccount);
-                phoneNumberService.saveNumber(phoneNumber);
-            }
+            User user = (User) userService.loadUserByUsername(principal.getName());
+            BigDecimal startBalance = BigDecimal.valueOf(50 + Math.random() * 100);
+            UserAccount userAccount = new UserAccount(startBalance, phoneCompany.get());
+            PhoneNumber phoneNumber = new PhoneNumber(number, user, phoneCompany.get(), userAccount);
+            phoneNumberService.saveNumber(phoneNumber);
+        }
+        return "redirect:/profile";
+    }
+
+    @PostMapping(value = "/number/{uid}")
+    public String updateNumber(@PathVariable("uid") long uid,
+                               @RequestParam("companyUid") Long companyUid) {
+        Optional<PhoneCompany> phoneCompany = phoneCompanyService.findCompanyByUid(companyUid);
+        Optional<PhoneNumber> phoneNumber = phoneNumberService.findNumberByUid(uid);
+        if (phoneNumber.isPresent() && phoneCompany.isPresent()) {
+            userAccountService.changeMobileOperator(phoneNumber.get(), phoneCompany.get());
         }
         return "redirect:/profile";
     }

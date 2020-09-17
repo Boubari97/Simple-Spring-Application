@@ -55,7 +55,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().deleteCookies("JSESSIONID")
             .and()
                 .rememberMe().key(REMEMBER_ME_KEY).tokenValiditySeconds(86400)
-            .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+            .and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
     }
 
     @Bean
@@ -80,6 +81,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public RememberMeAuthenticationFilter rememberMeAuthenticationFilter() throws Exception {
-        return  new RememberMeAuthenticationFilter(authenticationManager(), rememberMeServices());
+        return new RememberMeAuthenticationFilter(authenticationManager(), rememberMeServices());
     }
 }

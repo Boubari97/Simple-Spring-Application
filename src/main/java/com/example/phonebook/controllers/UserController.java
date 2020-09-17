@@ -1,8 +1,11 @@
 package com.example.phonebook.controllers;
 
+import com.example.phonebook.exceptions.ControllerException;
+import com.example.phonebook.exceptions.UserNotFoundException;
 import com.example.phonebook.model.User;
 import com.example.phonebook.services.UserService;
 import com.example.phonebook.utils.PdfBuilder;
+import com.itextpdf.text.DocumentException;
 import org.aspectj.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,9 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.security.Principal;
 import java.util.List;
@@ -21,16 +24,13 @@ import java.util.Optional;
 @Controller
 public class UserController {
 
-    private static final String FILE_NAME = "users.pdf";
-    private final PdfBuilder pdfBuilder;
+    private static final String DEFAULT_FILE_NAME = "users.pdf";
     private final UserService userService;
 
     @Autowired
-    public UserController(PdfBuilder pdfBuilder, UserService userService) {
-        this.pdfBuilder = pdfBuilder;
+    public UserController(UserService userService) {
         this.userService = userService;
     }
-
 
     @GetMapping(value = "/users")
     public String getUserList(Model model) {
@@ -40,38 +40,34 @@ public class UserController {
     }
 
     @GetMapping(value = "/users/{uid}")
-    public String getUserByUid(@PathVariable("uid") long uid, Model model,
-                               HttpServletRequest request, Principal principal) {
-
+    public String getUserByUid(@PathVariable("uid") long uid, Model model, Principal principal) {
         Optional<User> optionalUser = userService.findUserByUid(uid);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             model.addAttribute("uid", user.getUid());
             model.addAttribute("username", user.getUsername());
             model.addAttribute("numbers", user.getPhoneNumbers());
-            model.addAttribute("roles", user.getRoles());
+            model.addAttribute("roles", user.getAuthorities());
             model.addAttribute("principal", principal);
             return "userProfilePage.ftlh";
         } else {
-            request.setAttribute("errorMessage", "User Not Found");
-            request.setAttribute("errorDetails", "Sorry, but user with UID: " + uid + " not found.");
-            return "forward:/error";
+            throw new UserNotFoundException();
         }
     }
 
     @GetMapping(value = "/users/pdf", headers = "Accept=application/pdf")
-    public String getUsersInPdfFile(HttpServletResponse response, HttpServletRequest request) {
-
+    public void getUsersInPdfFile(HttpServletResponse response) {
+        PdfBuilder pdfBuilder = new PdfBuilder();
         try {
-            pdfBuilder.createPdfFile(FILE_NAME);
-            pdfBuilder.addTextToPDF("USERS: ");
+            pdfBuilder.createPdfFile(DEFAULT_FILE_NAME);
+            pdfBuilder.addTextToPDF("USERS: \n");
 
             List<User> userList = userService.findAllUsers();
             for (User user : userList) {
                 pdfBuilder.addTextToPDF(user.toString());
             }
 
-            File pdf = pdfBuilder.getPdfAsFile(FILE_NAME);
+            File pdf = pdfBuilder.getPdfAsFile(DEFAULT_FILE_NAME);
             byte[] bytes = FileUtil.readAsByteArray(pdf);
 
             response.setContentType("application/pdf");
@@ -82,15 +78,12 @@ public class UserController {
                 outputStream.write(bytes);
                 outputStream.flush();
             }
-            return "";
-        } catch (Exception e) {
-            request.setAttribute("errorMessage", e.getMessage());
-            request.setAttribute("errorDetails", e.getCause());
-            return "forward:/error";
+        } catch (DocumentException | IOException e) {
+            throw new ControllerException(e.getMessage());
         }
     }
 
-    @GetMapping(value = "/users/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/users/json")
     @ResponseBody
     public List<User> getJsonUsers() {
         return userService.findAllUsers();
@@ -102,15 +95,9 @@ public class UserController {
         model.addAttribute("uid", user.getUid());
         model.addAttribute("username", user.getUsername());
         model.addAttribute("numbers", user.getPhoneNumbers());
-        model.addAttribute("roles", user.getRoles());
+        model.addAttribute("roles", user.getAuthorities());
         model.addAttribute("principal", principal);
         return "userProfilePage.ftlh";
-    }
-
-    @PostMapping("/users/{uid}/delete")
-    public String deleteUser(@PathVariable("uid") long uid) {
-        userService.deleteUserByUid(uid);
-        return "forward:/users";
     }
 
 }

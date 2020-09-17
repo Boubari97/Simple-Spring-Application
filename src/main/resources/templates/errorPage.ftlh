@@ -4,12 +4,11 @@
 <head>
     <title>Error page</title>
 </head>
-<h5><a href="#" onclick="history.go(-1)">Go Back</a></h5>
-<h5><a href="/">Go to start page</a></h5>
 <body>
-    <h1>${errorMessage ! "Something went wrong!!!"}</h1>
+    <h5><a href="#" onclick="history.go(-1)">Go Back</a>
+        OR <a href="/">Go to start page</a></h5>
+    <#if statusCode ??><h1>Status code: ${statusCode}</h1></#if>
+    <h2>${errorMessage ! "Something went wrong!!!"}</h2>
     <#if errorDetails ??><h5>${errorDetails}</h5></#if>
-    <#if exceptionCause ??><h5>${exceptionCause}</h5></#if>
-    <#if statusCode ??><h5>Code: ${statusCode}</h5></#if>
 </body>
 </html>
